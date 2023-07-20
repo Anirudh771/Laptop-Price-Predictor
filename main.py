@@ -26,64 +26,44 @@ app.add_middleware(
 )
 
 class model_input(BaseModel):
-   MDVPFo : float
-   MDVPFhi : float
-   MDVPFlo : float
-   MDVPJitter : float
-   MDVPJitter1 : float
-   MDVPRAP : float
-   MDVPPPQ : float
-   JitterDDP : float
-   MDVPShimmer : float
-   MDVPShimmer1 : float
+   Company : str
+   Type : str
+   RAM : int
+   Weight : float
+   Ips : int
+   PPI : float
+   CPU_Brand : str
+   HDD : int
+   SSD : int
+   Gpu_Brand : str
    MDVPAPQ : float
-   ShimmerDDA : float
-   NHR : float
-   HNR : float
-   RPDE : float
-   DFA : float
-   spread1 : float
-   spread2 : float
-   D2 : float
-   PPE : float
-
+   OS : str
 # loading the saved model
-my_model = pickle.load(open('parkinsons_model.sav','rb'))
+my_model = pickle.load(open('model.sav','rb'))
 
 
-@app.post('/parkinsons_detection')
+@app.post('/')
 def parkinsons_pred(input_parameters : model_input):
 
+    cmp = input_dictionary['Company']
+    type = input_dictionary['Type']
+    ram = input_dictionary['RAM']
+    wgt = input_dictionary['Weight']
+    ips = input_dictionary['Ips']
+    ppi = input_dictionary['PPI']
+    cpu = input_dictionary['CPU_Brand']
+    hdd = input_dictionary['HDD']
+    ssd = input_dictionary['SSD']
+    gpu = input_dictionary['Gpu_Brand']
+    os = input_dictionary['OS']
+    
     input_data = input_parameters.json()
     input_dictionary = json.loads(input_data)
 
-    mdFo = input_dictionary['MDVPFo']
-    mdFhi = input_dictionary['MDVPFhi']
-    mdFlo = input_dictionary['MDVPFlo']
-    jit = input_dictionary['MDVPJitter']
-    jit1 = input_dictionary['MDVPJitter1']
-    mdRap = input_dictionary['MDVPRAP']
-    mdPq = input_dictionary['MDVPPPQ']
-    JitDdp = input_dictionary['JitterDDP']
-    msSh = input_dictionary['MDVPShimmer']
-    msSh1 = input_dictionary['MDVPShimmer1']
-    mdPq1 = input_dictionary['MDVPAPQ']
-    shDda = input_dictionary['ShimmerDDA']
-    nhr = input_dictionary['NHR']
-    hnr = input_dictionary['HNR']
-    rpde = input_dictionary['RPDE']
-    dfa = input_dictionary['DFA']
-    sp1 = input_dictionary['spread1']
-    sp2 = input_dictionary['spread2']
-    d2 = input_dictionary['D2']
-    ppe = input_dictionary['PPE']
+    
 
-
-    input_list = [mdFo, mdFhi, mdFlo, jit, jit1, mdRap, mdPq, JitDdp, msSh, msSh1, mdPq1, shDda, nhr, hnr, rpde, dfa, sp1, sp2, d2, ppe]
+    input_list = [cmp, type, ram, wgt, ips, ppi, cpu, hdd, ssd, gpu, os]
 
     prediction = my_model.predict([input_list])
 
-    if(prediction[0] == 0):
-      print("The person doesn't have parkinsons disease")
-    else:
-      print("The person has parkinsons disease")
+    return prediction
