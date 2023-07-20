@@ -64,6 +64,6 @@ def parkinsons_pred(input_parameters : model_input):
 
     input_list = [cmp, type, ram, wgt, ips, ppi, cpu, hdd, ssd, gpu, os]
 
-    prediction = my_model.predict([input_list])
+    prediction = my_model([input_list])
 
     return prediction
